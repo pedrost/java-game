@@ -4,6 +4,6 @@ Framework for developing simple RPGs.
 
 TRABALHO SENDO EXECUTADO
 
-Alunos: Pedro, Cristian, Vinicius
+Alunos: Pedro, Cristian, Vinicius(checked)
 
 Commit
