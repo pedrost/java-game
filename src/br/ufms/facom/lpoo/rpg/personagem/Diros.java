@@ -12,12 +12,15 @@ public class Diros implements Personagem {
 	private String nome;
 
 	private Posicao posicao;
+	
+	private boolean nanobot;
 
 	public Diros(String nome) {
 		this.nome = nome;
 		arma = new AdamantiumClaws();
 		vida = 5;
 		posicao = new Posicao();
+		nanobot = false;
 	}
 
 	public Diros(String nome, int x, int y) {
@@ -78,5 +81,10 @@ public class Diros implements Personagem {
 	@Override
 	public void setVida(int vida) {
 		this.vida = vida;
+	}
+	
+	@Override
+	public boolean isNanoBot() {
+		return nanobot;
 	}
 }

@@ -12,12 +12,15 @@ public class Axtron implements Personagem {
 	private String nome;
 
 	private Posicao posicao;
+	
+	private boolean nanobot;
 
 	public Axtron(String nome) {
 		this.nome = nome;
 		arma = new CosmicSword();
 		vida = 5;
 		posicao = new Posicao();
+		nanobot = true;
 	}
 
 	public Axtron(String nome, int x, int y) {
@@ -78,5 +81,10 @@ public class Axtron implements Personagem {
 	@Override
 	public void setVida(int vida) {
 		this.vida = vida;
+	}
+	
+	@Override
+	public boolean isNanoBot() {
+		return nanobot;
 	}
 }

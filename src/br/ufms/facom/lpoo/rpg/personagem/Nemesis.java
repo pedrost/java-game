@@ -12,12 +12,15 @@ public class Nemesis implements Personagem {
 	private String nome;
 
 	private Posicao posicao;
+	
+	private boolean nanobot;
 
 	public Nemesis(String nome) {
 		this.nome = nome;
 		arma = new EletricStick();
 		vida = 5;
 		posicao = new Posicao();
+		nanobot = true;
 	}
 
 	public Nemesis(String nome, int x, int y) {
@@ -78,5 +81,10 @@ public class Nemesis implements Personagem {
 	@Override
 	public void setVida(int vida) {
 		this.vida = vida;
+	}
+	
+	@Override
+	public boolean isNanoBot() {
+		return nanobot;
 	}
 }

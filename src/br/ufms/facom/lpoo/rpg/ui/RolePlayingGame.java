@@ -289,7 +289,12 @@ public class RolePlayingGame extends Application {
 			// Desenha ícone da arma.
 			gc.drawImage(getIcon(p.getArma()), x + 72, y + 72);
 			// Desenha nome do personagem.
-			gc.setStroke(Color.BLUE);
+			if(p.isNanoBot()) {
+				gc.setStroke(Color.RED);
+			}
+			else {
+				gc.setStroke(Color.BLUE);
+			}
 			gc.strokeText(p.getNome(), x, y + 90);
 			// Desenha barra de vida.
 			gc.setFill(Color.GREY);

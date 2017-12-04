@@ -12,12 +12,15 @@ public class Echo implements Personagem {
 	private String nome;
 
 	private Posicao posicao;
+	
+	private boolean nanobot;
 
 	public Echo(String nome) {
 		this.nome = nome;
 		arma = new PhaserGun();
 		vida = 5;
 		posicao = new Posicao();
+		nanobot = true;
 	}
 
 	public Echo(String nome, int x, int y) {
@@ -78,5 +81,10 @@ public class Echo implements Personagem {
 	@Override
 	public void setVida(int vida) {
 		this.vida = vida;
+	}
+	
+	@Override
+	public boolean isNanoBot() {
+		return nanobot;
 	}
 }

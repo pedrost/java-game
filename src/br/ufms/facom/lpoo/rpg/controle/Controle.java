@@ -2,7 +2,8 @@ package br.ufms.facom.lpoo.rpg.controle;
 
 import br.ufms.facom.lpoo.rpg.personagem.Personagem;
 import br.ufms.facom.lpoo.rpg.personagem.Posicao;
-import br.ufms.facom.lpoo.rpg.personagem.Soldado;
+import br.ufms.facom.lpoo.rpg.personagem.Axtron;
+import br.ufms.facom.lpoo.rpg.personagem.Shroud;
 import br.ufms.facom.lpoo.rpg.ui.RolePlayingGame;
 
 /**
@@ -28,12 +29,12 @@ public class Controle {
 	/**
 	 * Um personagem.
 	 */
-	private Soldado sold1;
+	private Axtron axtron;
 
 	/**
 	 * Outro personagem.
 	 */
-	private Soldado sold2;
+	private Shroud shroud;
 
 	/**
 	 * Cria um objeto de controle que usa o objeto <code>rpg</code> como
@@ -46,12 +47,12 @@ public class Controle {
 		this.rpg = rpg;
 
 		// Cria um personagem em um canto do tabuleiro e outro em outro canto.
-		sold1 = new Soldado("Sold1", 0, 0);
-		sold2 = new Soldado("Sold2", RolePlayingGame.MAX_X - 1, RolePlayingGame.MAX_Y - 1);
+		axtron = new Axtron("Axtron", 1, 1);
+		shroud = new Shroud("Shroud", 5, 5);
 
 		// Adiciona os dois personagens ao tabuleiro.
-		rpg.addPersonagem(sold2);
-		rpg.addPersonagem(sold1);
+		rpg.addPersonagem(axtron);
+		rpg.addPersonagem(shroud);
 	}
 
 	/**
@@ -80,7 +81,7 @@ public class Controle {
 		 * Exibe mensagem avisando que o usuário precisa selecionar a posição do
 		 * personagem 1.
 		 */
-		rpg.info(String.format("Personagem %s, selecione sua nova posição!", sold1.getNome()));
+		rpg.info(String.format("Personagem %s, selecione sua nova posição!", axtron.getNome()));
 
 		/*
 		 * Solicita uma casa do tabuleiro à interface. O usuário deverá
@@ -91,8 +92,8 @@ public class Controle {
 		Posicao pos = rpg.selecionaPosicao();
 
 		// Altera a posição do personagem 1.
-		sold1.setX(pos.x);
-		sold1.setY(pos.y);
+		axtron.setX(pos.x);
+		axtron.setY(pos.y);
 
 		/*
 		 * Solicita à interface que o tabuleiro seja atualizado, pois a posição
@@ -104,7 +105,7 @@ public class Controle {
 		 * Exibe mensagem avisando que o usuário precisa selecionar um oponente
 		 * a ser atacado pelo personagem 1.
 		 */
-		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", sold1.getNome()));
+		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", axtron.getNome()));
 
 		/*
 		 * Solicita um personagem à interface. O usuário deverá selecionar um
@@ -117,7 +118,7 @@ public class Controle {
 		 * atacando. Entretanto, no trabalho, diversas validações são
 		 * necessárias.
 		 */
-		if (p != sold1)
+		if (p != axtron)
 			p.setVida(p.getVida() - 1);
 		else
 			rpg.erro("Você não pode atacar você mesmo! Perdeu a vez.");
@@ -133,16 +134,16 @@ public class Controle {
 		 * realizadas com o personagem 2.
 		 */
 
-		rpg.info(String.format("Personagem %s, selecione sua nova posição!", sold2.getNome()));
+		rpg.info(String.format("Personagem %s, selecione sua nova posição!", shroud.getNome()));
 		pos = rpg.selecionaPosicao();
-		sold2.setX(pos.x);
-		sold2.setY(pos.y);
+		shroud.setX(pos.x);
+		shroud.setY(pos.y);
 
 		rpg.atualizaTabuleiro();
 
-		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", sold2.getNome()));
+		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", shroud.getNome()));
 		p = rpg.selecionaPersonagem();
-		if (p != sold2)
+		if (p != shroud)
 			p.setVida(p.getVida() - 1);
 		else
 			rpg.erro("Você não pode atacar você mesmo! Perdeu a vez.");

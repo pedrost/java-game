@@ -93,4 +93,6 @@ public interface Personagem {
 	 * @param y
 	 */
 	public void setY(int y);
+
+	boolean isNanoBot();
 }

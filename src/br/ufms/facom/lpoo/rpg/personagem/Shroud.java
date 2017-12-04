@@ -12,12 +12,15 @@ public class Shroud implements Personagem {
 	private String nome;
 
 	private Posicao posicao;
+	
+	private boolean nanobot;
 
 	public Shroud(String nome) {
 		this.nome = nome;
 		arma = new EletricStick();
 		vida = 5;
 		posicao = new Posicao();
+		nanobot = false;
 	}
 
 	public Shroud(String nome, int x, int y) {
@@ -78,5 +81,10 @@ public class Shroud implements Personagem {
 	@Override
 	public void setVida(int vida) {
 		this.vida = vida;
+	}
+	
+	@Override
+	public boolean isNanoBot() {
+		return nanobot;
 	}
 }
