@@ -504,5 +504,12 @@ public class RolePlayingGame extends Application {
 			return false;
 		}
 	}
+	
+	public int validarDistancia(int xSelecionado, int ySelecionado, int xAnterior, int yAnterior) {
+		int x = xSelecionado - xAnterior;
+		int y = ySelecionado - yAnterior;
+		int distancia = Math.abs(x) + Math.abs(y);
+		return Math.abs(distancia);
+	}
 
 }

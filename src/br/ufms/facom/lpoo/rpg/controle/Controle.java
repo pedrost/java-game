@@ -81,74 +81,40 @@ public class Controle {
 		 * Exibe mensagem avisando que o usuário precisa selecionar a posição do
 		 * personagem 1.
 		 */
-		rpg.info(String.format("Personagem %s, selecione sua nova posição!", axtron.getNome()));
-
-		/*
-		 * Solicita uma casa do tabuleiro à interface. O usuário deverá
-		 * selecionar (clicando com o mouse) em uma casa do tabuleiro. As
-		 * coordenadas desta casa serão retornadas em um objeto Posicao
-		 * (coordenadas x e y).
-		 */
-		Posicao pos = rpg.selecionaPosicao();
-
-		// Altera a posição do personagem 1.
-		axtron.setX(pos.x);
-		axtron.setY(pos.y);
-
-		/*
-		 * Solicita à interface que o tabuleiro seja atualizado, pois a posição
-		 * do personagem pode ter sido alterada.
-		 */
-		rpg.atualizaTabuleiro();
-
-		/*
-		 * Exibe mensagem avisando que o usuário precisa selecionar um oponente
-		 * a ser atacado pelo personagem 1.
-		 */
-		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", axtron.getNome()));
-
-		/*
-		 * Solicita um personagem à interface. O usuário deverá selecionar um
-		 * personagem no tabuleiro (clicando com o mouse sobre o personagem).
-		 */
-		Personagem p = rpg.selecionaPersonagem();
-
-		/*
-		 * A única validação realizada é se o personagem não o mesmo que está
-		 * atacando. Entretanto, no trabalho, diversas validações são
-		 * necessárias.
-		 */
-		if(rpg.isNanoBot(p)) {
-			rpg.erro("Você não pode atacar um aliado! Perdeu a vez.");
-		}
-		if (rpg.testeAtaque(p.getDefesa(), axtron.getAtaque()) ) {
-			p.setVida(p.getVida() - 1);
-		}
-
-		/*
-		 * Solicita à interface que o tabuleiro seja atualizado, pois os pontos
-		 * de vida de um personagem podem ter sido alterados.
-		 */
-		rpg.atualizaTabuleiro();
+		executaTurnoIndividual(axtron);
 
 		/*
 		 * Abaixo, as mesmas operações realizadas com o personagem 1 são
 		 * realizadas com o personagem 2.
 		 */
 
-		rpg.info(String.format("Personagem %s, selecione sua nova posição!", shroud.getNome()));
-		pos = rpg.selecionaPosicao();
-		shroud.setX(pos.x);
-		shroud.setY(pos.y);
+		executaTurnoIndividual(shroud);
+	}
+	
+	public void executaTurnoIndividual(Personagem personagem) throws InterruptedException {
+		rpg.info(String.format("Personagem %s, selecione sua nova posição!", personagem.getNome()));
+		
+		Posicao pos = rpg.selecionaPosicao();
+		
+		int distanciaShroud = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
+		rpg.erro("DISTANCIA DO " + personagem.getNome() + " " + distanciaShroud);
+		while(distanciaShroud > personagem.getVelocidade()) {
+			rpg.erro("MUITO LONGE SELECIONA DE NOVO");
+			pos = rpg.selecionaPosicao();
+			distanciaShroud = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
+		}
+		
+		personagem.setX(pos.x);
+		personagem.setY(pos.y);
 
 		rpg.atualizaTabuleiro();
 
-		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", shroud.getNome()));
-		p = rpg.selecionaPersonagem();
+		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", personagem.getNome()));
+		Personagem p = rpg.selecionaPersonagem();
 		if(!rpg.isNanoBot(p)) {
 			rpg.erro("Você não pode atacar um aliado! Perdeu a vez.");
 		}
-		if (rpg.testeAtaque(p.getDefesa(), shroud.getAtaque()) ) {
+		if (rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) ) {
 			p.setVida(p.getVida() - 1);
 		}
 
