@@ -511,5 +511,21 @@ public class RolePlayingGame extends Application {
 		int distancia = Math.abs(x) + Math.abs(y);
 		return Math.abs(distancia);
 	}
+	
+	public boolean validarAtaque(Personagem atacante, Personagem selecionado) {
+		if(atacante.isNanoBot()) {
+			if(isNanoBot(selecionado)) {
+				erro("Você não pode atacar um nano bot! Perdeu a vez.");
+				return false;
+			}
+		}
+		else {
+			if(!isNanoBot(selecionado)) {
+				erro("Você não pode atacar um anarquista! Perdeu a vez.");
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

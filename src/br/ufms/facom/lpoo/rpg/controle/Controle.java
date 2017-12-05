@@ -92,16 +92,19 @@ public class Controle {
 	}
 	
 	public void executaTurnoIndividual(Personagem personagem) throws InterruptedException {
+		if(personagem.getVida() <= 0) {
+			return;
+		}
 		rpg.info(String.format("Personagem %s, selecione sua nova posição!", personagem.getNome()));
 		
 		Posicao pos = rpg.selecionaPosicao();
 		
-		int distanciaShroud = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
-		rpg.erro("DISTANCIA DO " + personagem.getNome() + " " + distanciaShroud);
-		while(distanciaShroud > personagem.getVelocidade()) {
+		int distanciaPersonagem = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
+		rpg.erro("DISTANCIA DO " + personagem.getNome() + " " + distanciaPersonagem);
+		while(distanciaPersonagem > personagem.getVelocidade()) {
 			rpg.erro("MUITO LONGE SELECIONA DE NOVO");
 			pos = rpg.selecionaPosicao();
-			distanciaShroud = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
+			distanciaPersonagem = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
 		}
 		
 		personagem.setX(pos.x);
@@ -111,11 +114,12 @@ public class Controle {
 
 		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", personagem.getNome()));
 		Personagem p = rpg.selecionaPersonagem();
-		if(!rpg.isNanoBot(p)) {
-			rpg.erro("Você não pode atacar um aliado! Perdeu a vez.");
-		}
-		if (rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) ) {
+				
+		if (rpg.validarAtaque(personagem, p) && rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) ) {
 			p.setVida(p.getVida() - 1);
+			if(p.getVida() <= 0) {
+				rpg.removePersonagem(p);
+			}
 		}
 
 		rpg.atualizaTabuleiro();
