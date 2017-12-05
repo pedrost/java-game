@@ -27,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import java.util.Random;
 
 /**
  * Interface do RPG.
@@ -289,7 +290,12 @@ public class RolePlayingGame extends Application {
 			// Desenha ícone da arma.
 			gc.drawImage(getIcon(p.getArma()), x + 72, y + 72);
 			// Desenha nome do personagem.
-			gc.setStroke(Color.BLUE);
+			if(p.isNanoBot()) {
+				gc.setStroke(Color.RED);
+			}
+			else {
+				gc.setStroke(Color.BLUE);
+			}
 			gc.strokeText(p.getNome(), x, y + 90);
 			// Desenha barra de vida.
 			gc.setFill(Color.GREY);
@@ -473,6 +479,37 @@ public class RolePlayingGame extends Application {
 
 		// Interrompe thread de controle.
 		threadControle.interrupt();
+	}
+	
+	public boolean testeAtaque(int p2Defesa, int p1Ataque) throws InterruptedException {
+		int r;
+		r = 5 + (p1Ataque - p2Defesa);
+		Random rng = new Random();
+		int numeroGerado = rng.nextInt(10);
+		if(numeroGerado < r) {
+			info("Voce atacou com sucesso! Valor de Referencia: " + r + ", numero gerado: " + numeroGerado );
+			return true;
+		}
+		else {
+			erro("O seu ataque falhou! Valor de Referencia " + r + ", numero gerado: " + numeroGerado );
+			return false;
+		}
+	}
+	
+	public boolean isNanoBot(Personagem p) {
+		if(p.isNanoBot()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public int validarDistancia(int xSelecionado, int ySelecionado, int xAnterior, int yAnterior) {
+		int x = xSelecionado - xAnterior;
+		int y = ySelecionado - yAnterior;
+		int distancia = Math.abs(x) + Math.abs(y);
+		return Math.abs(distancia);
 	}
 
 }

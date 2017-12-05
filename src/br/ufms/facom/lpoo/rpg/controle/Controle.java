@@ -2,7 +2,8 @@ package br.ufms.facom.lpoo.rpg.controle;
 
 import br.ufms.facom.lpoo.rpg.personagem.Personagem;
 import br.ufms.facom.lpoo.rpg.personagem.Posicao;
-import br.ufms.facom.lpoo.rpg.personagem.Soldado;
+import br.ufms.facom.lpoo.rpg.personagem.Axtron;
+import br.ufms.facom.lpoo.rpg.personagem.Shroud;
 import br.ufms.facom.lpoo.rpg.ui.RolePlayingGame;
 
 /**
@@ -28,12 +29,12 @@ public class Controle {
 	/**
 	 * Um personagem.
 	 */
-	private Soldado sold1;
+	private Axtron axtron;
 
 	/**
 	 * Outro personagem.
 	 */
-	private Soldado sold2;
+	private Shroud shroud;
 
 	/**
 	 * Cria um objeto de controle que usa o objeto <code>rpg</code> como
@@ -46,12 +47,12 @@ public class Controle {
 		this.rpg = rpg;
 
 		// Cria um personagem em um canto do tabuleiro e outro em outro canto.
-		sold1 = new Soldado("Sold1", 0, 0);
-		sold2 = new Soldado("Sold2", RolePlayingGame.MAX_X - 1, RolePlayingGame.MAX_Y - 1);
+		axtron = new Axtron("Axtron", 1, 1);
+		shroud = new Shroud("Shroud", 5, 5);
 
 		// Adiciona os dois personagens ao tabuleiro.
-		rpg.addPersonagem(sold2);
-		rpg.addPersonagem(sold1);
+		rpg.addPersonagem(axtron);
+		rpg.addPersonagem(shroud);
 	}
 
 	/**
@@ -80,72 +81,42 @@ public class Controle {
 		 * Exibe mensagem avisando que o usuário precisa selecionar a posição do
 		 * personagem 1.
 		 */
-		rpg.info(String.format("Personagem %s, selecione sua nova posição!", sold1.getNome()));
-
-		/*
-		 * Solicita uma casa do tabuleiro à interface. O usuário deverá
-		 * selecionar (clicando com o mouse) em uma casa do tabuleiro. As
-		 * coordenadas desta casa serão retornadas em um objeto Posicao
-		 * (coordenadas x e y).
-		 */
-		Posicao pos = rpg.selecionaPosicao();
-
-		// Altera a posição do personagem 1.
-		sold1.setX(pos.x);
-		sold1.setY(pos.y);
-
-		/*
-		 * Solicita à interface que o tabuleiro seja atualizado, pois a posição
-		 * do personagem pode ter sido alterada.
-		 */
-		rpg.atualizaTabuleiro();
-
-		/*
-		 * Exibe mensagem avisando que o usuário precisa selecionar um oponente
-		 * a ser atacado pelo personagem 1.
-		 */
-		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", sold1.getNome()));
-
-		/*
-		 * Solicita um personagem à interface. O usuário deverá selecionar um
-		 * personagem no tabuleiro (clicando com o mouse sobre o personagem).
-		 */
-		Personagem p = rpg.selecionaPersonagem();
-
-		/*
-		 * A única validação realizada é se o personagem não o mesmo que está
-		 * atacando. Entretanto, no trabalho, diversas validações são
-		 * necessárias.
-		 */
-		if (p != sold1)
-			p.setVida(p.getVida() - 1);
-		else
-			rpg.erro("Você não pode atacar você mesmo! Perdeu a vez.");
-
-		/*
-		 * Solicita à interface que o tabuleiro seja atualizado, pois os pontos
-		 * de vida de um personagem podem ter sido alterados.
-		 */
-		rpg.atualizaTabuleiro();
+		executaTurnoIndividual(axtron);
 
 		/*
 		 * Abaixo, as mesmas operações realizadas com o personagem 1 são
 		 * realizadas com o personagem 2.
 		 */
 
-		rpg.info(String.format("Personagem %s, selecione sua nova posição!", sold2.getNome()));
-		pos = rpg.selecionaPosicao();
-		sold2.setX(pos.x);
-		sold2.setY(pos.y);
+		executaTurnoIndividual(shroud);
+	}
+	
+	public void executaTurnoIndividual(Personagem personagem) throws InterruptedException {
+		rpg.info(String.format("Personagem %s, selecione sua nova posição!", personagem.getNome()));
+		
+		Posicao pos = rpg.selecionaPosicao();
+		
+		int distanciaShroud = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
+		rpg.erro("DISTANCIA DO " + personagem.getNome() + " " + distanciaShroud);
+		while(distanciaShroud > personagem.getVelocidade()) {
+			rpg.erro("MUITO LONGE SELECIONA DE NOVO");
+			pos = rpg.selecionaPosicao();
+			distanciaShroud = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
+		}
+		
+		personagem.setX(pos.x);
+		personagem.setY(pos.y);
 
 		rpg.atualizaTabuleiro();
 
-		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", sold2.getNome()));
-		p = rpg.selecionaPersonagem();
-		if (p != sold2)
+		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", personagem.getNome()));
+		Personagem p = rpg.selecionaPersonagem();
+		if(!rpg.isNanoBot(p)) {
+			rpg.erro("Você não pode atacar um aliado! Perdeu a vez.");
+		}
+		if (rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) ) {
 			p.setVida(p.getVida() - 1);
-		else
-			rpg.erro("Você não pode atacar você mesmo! Perdeu a vez.");
+		}
 
 		rpg.atualizaTabuleiro();
 	}
