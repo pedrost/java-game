@@ -118,10 +118,12 @@ public class Controle {
 		 * atacando. Entretanto, no trabalho, diversas validações são
 		 * necessárias.
 		 */
-		if (p != axtron)
+		if(rpg.isNanoBot(p)) {
+			rpg.erro("Você não pode atacar um aliado! Perdeu a vez.");
+		}
+		if (rpg.testeAtaque(p.getDefesa(), axtron.getAtaque()) ) {
 			p.setVida(p.getVida() - 1);
-		else
-			rpg.erro("Você não pode atacar você mesmo! Perdeu a vez.");
+		}
 
 		/*
 		 * Solicita à interface que o tabuleiro seja atualizado, pois os pontos
@@ -143,10 +145,10 @@ public class Controle {
 
 		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", shroud.getNome()));
 		p = rpg.selecionaPersonagem();
-		if (p != shroud)
+		if (p.isNanoBot())
 			p.setVida(p.getVida() - 1);
 		else
-			rpg.erro("Você não pode atacar você mesmo! Perdeu a vez.");
+			rpg.erro("Você não pode atacar um anarquista aliado! Perdeu a vez.");
 
 		rpg.atualizaTabuleiro();
 	}

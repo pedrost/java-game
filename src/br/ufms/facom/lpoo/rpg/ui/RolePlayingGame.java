@@ -27,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import java.util.Random;
 
 /**
  * Interface do RPG.
@@ -478,6 +479,30 @@ public class RolePlayingGame extends Application {
 
 		// Interrompe thread de controle.
 		threadControle.interrupt();
+	}
+	
+	public boolean testeAtaque(int p2Defesa, int p1Ataque) throws InterruptedException {
+		int r;
+		r = 5 + (p1Ataque - p2Defesa);
+		Random rng = new Random();
+		int numeroGerado = rng.nextInt(10);
+		if(numeroGerado < r) {
+			info("Voce atacou com sucesso! Valor de Referencia: " + r + ", numero gerado: " + numeroGerado );
+			return true;
+		}
+		else {
+			erro("O seu ataque falhou! Valor de Referencia " + r + ", numero gerado: " + numeroGerado );
+			return false;
+		}
+	}
+	
+	public boolean isNanoBot(Personagem p) {
+		if(p.isNanoBot()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }
