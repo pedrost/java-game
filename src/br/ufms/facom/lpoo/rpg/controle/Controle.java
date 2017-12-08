@@ -35,15 +35,15 @@ public class Controle {
 	 * NanoBots.
 	 */
 	private Axtron axtron;
-    private Echo echo;
-    private Nemesis nemesis;
+        private Echo echo;
+        private Nemesis nemesis;
 
 	/**
 	 * Anarquistas.
 	 */
 	private Shroud shroud;
-    private Diros diros;
-    private Mist mist;
+        private Diros diros;
+        private Mist mist;
 
 	/**
 	 * Cria um objeto de controle que usa o objeto <code>rpg</code> como
@@ -53,28 +53,28 @@ public class Controle {
 	 *            interface gráfica da aplicação.
 	 */
 	public Controle(RolePlayingGame rpg) {
-                Random gerador = new Random();
-		this.rpg = rpg;
-        int[] num = new int[]{0, 1, 2, 5, 6 , 7};
-        int aX = num[gerador.nextInt(3)];
-        int aY = num[gerador.nextInt(2)+1];
-        int sX = num[gerador.nextInt(3)+3];
-        int sY = num[gerador.nextInt(2)+3];
-		// Cria um personagem em um canto do tabuleiro e outro em outro canto.
-		axtron = new Axtron("Axtron", aX, aY);
-		shroud = new Shroud("Shroud", sX, sY);
-        echo = new Echo("Echo", 0, 0);
-        mist = new Mist("Mist", 7, 7);
-        nemesis = new Nemesis("Nemesis", 3, 2);
-        diros = new Diros("Diros", 5, 4);
+            Random gerador = new Random();
+            this.rpg = rpg;
+            int[] num = new int[]{0, 1, 2, 5, 6 , 7};
+            int aX = num[gerador.nextInt(3)];
+            int aY = num[gerador.nextInt(2)+1];
+            int sX = num[gerador.nextInt(3)+3];
+            int sY = num[gerador.nextInt(2)+3];
+	// Cria um personagem em um canto do tabuleiro e outro em outro canto.
+            axtron = new Axtron("Axtron", aX, aY);
+            shroud = new Shroud("Shroud", sX, sY);
+            echo = new Echo("Echo", 0, 0);
+            mist = new Mist("Mist", 7, 7);
+            nemesis = new Nemesis("Nemesis", 3, 2);
+            diros = new Diros("Diros", 4, 5);
 
-		// Adiciona os dois personagens ao tabuleiro.
-		rpg.addPersonagem(axtron);
-		rpg.addPersonagem(shroud);
-        rpg.addPersonagem(echo);
-        rpg.addPersonagem(mist);
-        rpg.addPersonagem(nemesis);
-        rpg.addPersonagem(diros);
+	// Adiciona os dois personagens ao tabuleiro.
+            rpg.addPersonagem(axtron);
+            rpg.addPersonagem(shroud);
+            rpg.addPersonagem(echo);
+            rpg.addPersonagem(mist);
+            rpg.addPersonagem(nemesis);
+            rpg.addPersonagem(diros);
 	}
 
 	/**
@@ -103,19 +103,19 @@ public class Controle {
 		 * Exibe mensagem avisando que o usuário precisa selecionar a posição do
 		 * personagem 1.
 		 */
-                
-                //FALTA FAZER A IA PRA ESSES 3;
-		executaTurnoIndividual(axtron);
-                executaTurnoIndividual(echo);
+                 
+		executaTurnoIndividual(shroud);
+                executaTurnoIndividual(mist);
                 executaTurnoIndividual(diros);
 
 		/*
 		 * Abaixo, as mesmas operações realizadas com o personagem 1 são
 		 * realizadas com o personagem 2.
 		 */
-
-		executaTurnoIndividual(shroud);
-                executaTurnoIndividual(mist);
+                
+                //FALTA FAZER A IA PRA ESSES 3;
+                executaTurnoIndividual(axtron);
+                executaTurnoIndividual(echo);
                 executaTurnoIndividual(nemesis);
                 
 	}
@@ -144,7 +144,7 @@ public class Controle {
 		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", personagem.getNome()));
 		Personagem p = rpg.selecionaPersonagem();
 				
-		if (rpg.validarAtaque(personagem, p) && rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) && rpg.validarAlcance(personagem, p) ) {
+		if (rpg.validarAlcance(personagem, p) && rpg.validarAtaque(personagem, p) && rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) ) {
 			p.setVida(p.getVida() - 1);
 			if(p.getVida() <= 0) {
 				rpg.removePersonagem(p);
@@ -153,4 +153,13 @@ public class Controle {
 
 		rpg.atualizaTabuleiro();
 	}
+        
+        public void executaTurnoIA(Personagem personagem) throws InterruptedException{
+            if(personagem.getVida() <= 0) {
+			return;
+		}
+            
+            rpg.info(String.format("Personagem %s, irá atacar!", personagem.getNome()));
+            
+        }
 }
