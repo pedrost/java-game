@@ -1,5 +1,5 @@
 package br.ufms.facom.lpoo.rpg.personagem;
-
+//ANARQUISTA
 import br.ufms.facom.lpoo.rpg.arma.Arma;
 import br.ufms.facom.lpoo.rpg.arma.PhaserGun;
 
@@ -30,12 +30,12 @@ public class Mist implements Personagem {
 
 	@Override
 	public int getDefesa() {
-		return 4;
+		return 1;
 	}
 
 	@Override
 	public int getAtaque() {
-		return 3;
+		return 4;
 	}
 
 	@Override

@@ -527,5 +527,16 @@ public class RolePlayingGame extends Application {
 		}
 		return true;
 	}
+        
+    public boolean validarAlcance(Personagem atak, Personagem selec){
+        int distEntPers = validarDistancia(selec.getX(), selec.getY(), atak.getX(), atak.getY());
+        int a = atak.getArma().getAlcance();
+        if(atak.getArma().getAlcance() < distEntPers){
+            erro("Você está muito longe do que pode alcançar, perdeu a vez.");
+                    return false;
+        } else {
+            return true;
+        }
+    }
 
 }

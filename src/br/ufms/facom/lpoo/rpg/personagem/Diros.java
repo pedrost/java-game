@@ -1,5 +1,5 @@
 package br.ufms.facom.lpoo.rpg.personagem;
-
+//ANARQUISTA
 import br.ufms.facom.lpoo.rpg.arma.Arma;
 import br.ufms.facom.lpoo.rpg.arma.AdamantiumClaws;
 

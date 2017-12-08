@@ -1,7 +1,7 @@
 package br.ufms.facom.lpoo.rpg.personagem;
-
+//NANOBOTS
 import br.ufms.facom.lpoo.rpg.arma.Arma;
-import br.ufms.facom.lpoo.rpg.arma.EletricStick;
+import br.ufms.facom.lpoo.rpg.arma.AdamantiumClaws;
 
 public class Nemesis implements Personagem {
 
@@ -17,7 +17,7 @@ public class Nemesis implements Personagem {
 
 	public Nemesis(String nome) {
 		this.nome = nome;
-		arma = new EletricStick();
+		arma = new AdamantiumClaws();
 		vida = 5;
 		posicao = new Posicao();
 		nanobot = true;
@@ -35,12 +35,12 @@ public class Nemesis implements Personagem {
 
 	@Override
 	public int getAtaque() {
-		return 5;
+		return 3;
 	}
 
 	@Override
 	public int getVelocidade() {
-		return 2;
+		return 5;
 	}
 
 	@Override

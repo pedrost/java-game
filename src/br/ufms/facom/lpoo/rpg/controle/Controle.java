@@ -4,7 +4,12 @@ import br.ufms.facom.lpoo.rpg.personagem.Personagem;
 import br.ufms.facom.lpoo.rpg.personagem.Posicao;
 import br.ufms.facom.lpoo.rpg.personagem.Axtron;
 import br.ufms.facom.lpoo.rpg.personagem.Shroud;
+import br.ufms.facom.lpoo.rpg.personagem.Echo;
+import br.ufms.facom.lpoo.rpg.personagem.Nemesis;
+import br.ufms.facom.lpoo.rpg.personagem.Diros;
+import br.ufms.facom.lpoo.rpg.personagem.Mist;
 import br.ufms.facom.lpoo.rpg.ui.RolePlayingGame;
+import java.util.Random;
 
 /**
  * Controle do jogo: personagens e suas interações.
@@ -27,14 +32,18 @@ public class Controle {
 	private RolePlayingGame rpg;
 
 	/**
-	 * Um personagem.
+	 * NanoBots.
 	 */
 	private Axtron axtron;
+    private Echo echo;
+    private Nemesis nemesis;
 
 	/**
-	 * Outro personagem.
+	 * Anarquistas.
 	 */
 	private Shroud shroud;
+    private Diros diros;
+    private Mist mist;
 
 	/**
 	 * Cria um objeto de controle que usa o objeto <code>rpg</code> como
@@ -44,15 +53,28 @@ public class Controle {
 	 *            interface gráfica da aplicação.
 	 */
 	public Controle(RolePlayingGame rpg) {
+                Random gerador = new Random();
 		this.rpg = rpg;
-
+        int[] num = new int[]{0, 1, 2, 5, 6 , 7};
+        int aX = num[gerador.nextInt(3)];
+        int aY = num[gerador.nextInt(2)+1];
+        int sX = num[gerador.nextInt(3)+3];
+        int sY = num[gerador.nextInt(2)+3];
 		// Cria um personagem em um canto do tabuleiro e outro em outro canto.
-		axtron = new Axtron("Axtron", 1, 1);
-		shroud = new Shroud("Shroud", 5, 5);
+		axtron = new Axtron("Axtron", aX, aY);
+		shroud = new Shroud("Shroud", sX, sY);
+        echo = new Echo("Echo", 0, 0);
+        mist = new Mist("Mist", 7, 7);
+        nemesis = new Nemesis("Nemesis", 3, 2);
+        diros = new Diros("Diros", 5, 4);
 
 		// Adiciona os dois personagens ao tabuleiro.
 		rpg.addPersonagem(axtron);
 		rpg.addPersonagem(shroud);
+        rpg.addPersonagem(echo);
+        rpg.addPersonagem(mist);
+        rpg.addPersonagem(nemesis);
+        rpg.addPersonagem(diros);
 	}
 
 	/**
@@ -81,7 +103,11 @@ public class Controle {
 		 * Exibe mensagem avisando que o usuário precisa selecionar a posição do
 		 * personagem 1.
 		 */
+                
+                //FALTA FAZER A IA PRA ESSES 3;
 		executaTurnoIndividual(axtron);
+                executaTurnoIndividual(echo);
+                executaTurnoIndividual(diros);
 
 		/*
 		 * Abaixo, as mesmas operações realizadas com o personagem 1 são
@@ -89,6 +115,9 @@ public class Controle {
 		 */
 
 		executaTurnoIndividual(shroud);
+                executaTurnoIndividual(mist);
+                executaTurnoIndividual(nemesis);
+                
 	}
 	
 	public void executaTurnoIndividual(Personagem personagem) throws InterruptedException {
@@ -100,9 +129,9 @@ public class Controle {
 		Posicao pos = rpg.selecionaPosicao();
 		
 		int distanciaPersonagem = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
-		rpg.erro("DISTANCIA DO " + personagem.getNome() + " " + distanciaPersonagem);
 		while(distanciaPersonagem > personagem.getVelocidade()) {
-			rpg.erro("MUITO LONGE SELECIONA DE NOVO");
+                        rpg.erro(personagem.getNome() + " selecionou distancia: " + distanciaPersonagem);
+			rpg.erro("Muito longe, tente novamente.");
 			pos = rpg.selecionaPosicao();
 			distanciaPersonagem = rpg.validarDistancia(pos.x, pos.y, personagem.getX(), personagem.getY());
 		}
@@ -115,7 +144,7 @@ public class Controle {
 		rpg.info(String.format("Personagem %s, selecione um inimigo para atacar!", personagem.getNome()));
 		Personagem p = rpg.selecionaPersonagem();
 				
-		if (rpg.validarAtaque(personagem, p) && rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) ) {
+		if (rpg.validarAtaque(personagem, p) && rpg.testeAtaque(p.getDefesa(), personagem.getAtaque()) && rpg.validarAlcance(personagem, p) ) {
 			p.setVida(p.getVida() - 1);
 			if(p.getVida() <= 0) {
 				rpg.removePersonagem(p);

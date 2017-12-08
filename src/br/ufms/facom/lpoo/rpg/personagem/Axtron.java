@@ -1,5 +1,5 @@
 package br.ufms.facom.lpoo.rpg.personagem;
-
+//NANOBOTS
 import br.ufms.facom.lpoo.rpg.arma.Arma;
 import br.ufms.facom.lpoo.rpg.arma.CosmicSword;
 
@@ -30,7 +30,7 @@ public class Axtron implements Personagem {
 
 	@Override
 	public int getDefesa() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class Axtron implements Personagem {
 
 	@Override
 	public int getVelocidade() {
-		return 2;
+		return 3;
 	}
 
 	@Override
